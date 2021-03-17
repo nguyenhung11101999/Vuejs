@@ -1,0 +1,211 @@
+/**
+    Dialog employee
+*/
+.isHide{
+    display: none;
+  }
+/**
+    Dialog employee
+*/
+.m-dialog {
+    height: 100%;
+    width: 100%;
+    /* display: none; */
+}
+
+    .m-dialog .dialog-modal {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background-color: #000;
+        opacity: .4;
+        z-index: 4;
+    }
+
+    .m-dialog .dialog-content {
+        width: 700px;
+        height: 550px;
+        z-index: 10;
+    }
+
+    .m-dialog .required-red {
+        color: red;
+    }
+/*
+    Dialog header
+*/
+.dialog-content .dialog-header {
+    padding: 24px 24px 0px 24px;
+    display: flex;
+}
+
+    .dialog-content .dialog-header .dialog-header-title {
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+/*
+    Dialog body
+*/
+.dialog-content .dialog-body {
+    padding: 0px 24px;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+
+.m-dialog-all{
+    display: flex;
+}
+
+.upload-photo {
+    width: 30%;
+}
+
+.m-dialog-info {
+    width: 70%;
+    display: flex;
+}
+
+.upload-photo {
+    text-align: center;
+}
+
+.upload-contain {
+    width: 180px;
+    height: 180px;
+    background-image: url('../../assets/img/default-avatar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 1px solid #b5b3b3;
+    border-radius: 50%;
+}
+
+    .upload-contain #photo {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+input {
+    padding: 10px 16px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #bbb;
+}
+
+    input[type="date"] {
+        width: 83%;
+    }
+
+    input[type="radio"] {
+        width: 27px;
+        height: 27px;
+    }
+
+    input[fieldName="FullName"] {
+        width: 84%;
+    }
+
+select {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #bbb;
+}
+
+.m-row {
+    margin-top: 5px;
+}
+
+.m-infor-conter {
+    width: 50%;
+    position: relative;
+}
+
+    .m-infor-conter > div {
+        position: absolute;
+        right: 0px;
+    }
+
+.m-row-gender {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .m-row-gender .m-gender-center {
+        display: flex;
+        align-items: center;
+    }
+
+        .m-row-gender .m-gender-center .m-gender-span {
+            margin-left: 10px;
+        }
+
+.m-dialog-show {
+    display: flex;
+}
+
+    .m-dialog-show .m-show-content {
+        width: 50%;
+    }
+
+        .m-dialog-show .m-show-content .m-content-right {
+            margin-left: 20px;
+        }
+
+        .m-dialog-show .m-show-content input {
+            width: 89%;
+        }
+
+.m-show-end input {
+    width: 95%;
+}
+
+.border-red {
+    border: 1px solid red;
+}
+/**
+    Phần footer dialog
+*/
+.dialog-footer{
+    justify-content: space-between;
+}
+.dialog-footer button {
+    width: 100px;
+}
+
+.dialog-footer .footer-right {
+    display: flex;
+}
+
+    .dialog-footer .footer-right .btn-cancel {
+        margin-right: 10px;
+        color: #000;
+    }
+
+        .dialog-footer .footer-right .btn-cancel span {
+            width: 100%;
+            text-align: center;
+        }
+
+#btn-delete-customer {
+    visibility: hidden;
+}
+
+#txtSalary {
+    text-align: right;
+}
+.m-date-center{
+    text-align: center;
+  }
+.m-money-left{
+    text-align: right;
+  }

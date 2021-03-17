@@ -6,7 +6,7 @@
         <div class="page-feature">
           <button class="m-btn btn-add-save" id="btn-add" @click="btnClickAdd">
             <div class="icon-add"></div>
-            <div class="m-btn-action btn-text">Thêm nhân viên</div>
+            <div class="m-btn-action btn-text">Thêm khách hàng</div>
           </button>
         </div>
       </div>
@@ -43,46 +43,48 @@
           </colgroup>
           <thead>
             <tr>
-              <th fieldName="CustomerCode">Ma nhan vien</th>
-              <th fieldName="FullName">Ho ten</th>
-              <th fieldName="GenderName">Gioi tinh</th>
+              <th fieldName="customerCode">Ma nhan vien</th>
+              <th fieldName="fullName">Ho ten</th>
+              <th fieldName="genderName">Gioi tinh</th>
               <th
-                fieldName="DateOfBirth"
+                fieldName="dateOfBirth"
                 formatType="ddmmyyy"
                 style="text-align: center"
               >
                 Ngay sinh
               </th>
-              <th fieldName="PhoneNumber">So dien thoai</th>
-              <th fieldName="Email">Email</th>
-              <th fieldName="Address">Dia chi</th>
-              <th
-                fieldName="Salary"
-                formatType="Money"
+              <th fieldName="phoneNumber">So dien thoai</th>
+              <th fieldName="email">Email</th>
+              <th fieldName="address">Dia chi</th>
+              <!-- <th
+                fieldName="salary"
+                formatType="money"
                 style="text-align: right"
               >
                 So tien lo
-              </th>
-              <th fieldName="MemberCardCode">Ma the thanh vien</th>
+              </th> -->
+              <th fieldName="note">Note</th>
+              <th fieldName="memberCardCode">Ma the thanh vien</th>
             </tr>
           </thead>
           <tbody class="scrollContent">
             <tr
               v-for="customer in customer"
-              :key="customer.CustomerId"
+              :key="customer.customerId"
               @dblclick="dbClick"
             >
-              <td>{{ customer.CustomerCode }}</td>
-              <td>{{ customer.FullName }}</td>
-              <td>{{ customer.GenderName }}</td>
+              <td>{{ customer.customerCode }}</td>
+              <td>{{ customer.fullName }}</td>
+              <td>{{ customer.genderName }}</td>
               <td class="m-date-center">
-                {{ formatDate(customer.DateOfBirth) }}
+                {{ formatDate(customer.dateOfBirth) }}
               </td>
-              <td>{{ customer.PhoneNumber }}</td>
-              <td>{{ customer.Email }}</td>
-              <td>{{ customer.Address }}</td>
-              <td class="m-money-left">{{ formatMoney(customer.Salary) }}</td>
-              <td>{{ customer.MemberCardCode }}</td>
+              <td>{{ customer.phoneNumber }}</td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.address }}</td>
+              <!-- <td class="m-money-left">{{ formatMoney(customer.salary) }}</td> -->
+              <td>{{ customer.note }}</td>
+              <td>{{ customer.memberCardCode }}</td>
             </tr>
           </tbody>
         </table>
@@ -112,18 +114,18 @@
     <CustomerListDetail
       @closePopup="closePopup"
       :isHide="isHideParent"
-      ref="customerGroup"
+      ref="customerCode"
       :customergroup="customergroup"
     />
   </div>
 </template>
 <script>
 import axios from "axios";
-import CustomerListDetail from './CustomerListDetail'
+import CustomerListDetail from "./CustomerListDetail";
 export default {
   name: "CustomerList",
   components: {
-   CustomerListDetail
+    CustomerListDetail,
   },
   data() {
     return {
@@ -133,22 +135,28 @@ export default {
     };
   },
   methods: {
+    //Sự kiện kích đúp vào 1 dòng của bảng
     dbClick() {
       this.isHideParent = false;
+      //focus vào Input  CustomerCode
       setTimeout(() => {
-        this.$refs.customerGroup.$refs.customerGroup.focus();
+        this.$refs.customerCode.$refs.customerCode.focus();
       }, 0);
     },
+    //Sự kiện  Đóng Dialog
     closePopup(value) {
       this.isHideParent = value;
     },
+    //Sự kiện  Load lại dữ liệu
     btnClickRefresh() {},
+    //Sự kiện Thêm khách hàng
     btnClickAdd() {
       this.isHideParent = false;
       setTimeout(() => {
-        this.$refs.customerGroup.$refs.customerGroup.focus();
+        this.$refs.customerCode.$refs.customerCode.focus();
       }, 0);
     },
+    //Hàm định dạng ngày tháng
     formatDate(ddmmyyy) {
       var date = new Date(ddmmyyy);
       if (Number.isNaN(date.getTime())) {
@@ -162,6 +170,7 @@ export default {
         return day + "/" + month + "/" + year;
       }
     },
+    //Hàm định dạng tiền tệ
     formatMoney(money) {
       if (money == null) return "";
       else {
@@ -169,19 +178,29 @@ export default {
         return num;
       }
     },
+    //Hàm load dữ liệu
     async loadData() {
-      await axios.get("http://api.manhnv.net/api/customers").then((res) => {
+      await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
         this.customer = res.data;
       });
     },
+    // Hàm load dữ liệu của customergroup
     async loadCustomerGroup() {
       await axios
-        .get("http://api.manhnv.net/api/customergroups")
+        .get("http://localhost:53873/api/v1/customergroups")
         .then((res) => {
           this.customergroup = res.data;
         });
     },
+    // async loadCustomerGroup() {
+    //   await axios
+    //     .get("http://api.manhnv.net/api/customergroups")
+    //     .then((res) => {
+    //       this.customergroup = res.data;
+    //     });
+    // },
   },
+  //hàm khởi tạo lần đầu
   created() {
     this.loadData();
     this.loadCustomerGroup();
@@ -189,4 +208,5 @@ export default {
 };
 </script>
 <style>
+@import "../../../../styles/pages/customer.css";
 </style>

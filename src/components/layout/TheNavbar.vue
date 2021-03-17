@@ -25,13 +25,13 @@
       <div class="nav-item">
         <div class="nav-item-icon m-icon-employee"></div>
         <div class="nav-item-text">
-          <a href="customer.html"> Danh mục khách hàng</a>
+           <router-link to="/Customers">Danh mục khách hàng</router-link>
         </div>
       </div>
       <div class="nav-item">
         <div class="nav-item-icon m-icon-employee"></div>
         <div class="nav-item-text">
-          <a href="employee.html"> Danh mục nhân viên </a>
+          <router-link to="/Employees">Danh mục nhân viên</router-link>
         </div>
       </div>
 

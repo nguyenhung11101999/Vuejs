@@ -1,15 +1,15 @@
 <template>
   <div>
-    <CustomerList />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import CustomerList from "../views/dictionary/customers/CustomerList";
+
 export default {
   name: "TheContent",
   components: {
-    CustomerList,
+    
   },
 };
 </script>

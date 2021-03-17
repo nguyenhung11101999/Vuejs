@@ -29,14 +29,14 @@
                   </div>
                   <div class="m-control">
                     <input
-                      ref="customerGroup"
+                      ref="customerCode"
                       tabindex="1"
                       id="txtCustomerCode"
                       type="text"
                       class="input-required"
                       required
                       fieldName="CustomerCode"
-                      v-model="customer.CustomerCode"
+                      v-model="customer.customerCode"
                     />
                   </div>
                 </div>
@@ -48,7 +48,7 @@
                       id="txtMemberCardCode"
                       type="text"
                       fieldName="MemberCardCode"
-                      v-model="customer.MemberCardCode"
+                      v-model="customer.memberCardCode"
                     />
                   </div>
                 </div>
@@ -60,7 +60,7 @@
                       id="dtDateOfBirth"
                       type="date"
                       fieldName="DateOfBirth"
-                      v-model="customer.DateOfBirth"
+                      v-model="customer.dateOfBirth"
                     />
                   </div>
                 </div>
@@ -79,14 +79,15 @@
                       type="text"
                       required
                       fieldName="FullName"
-                      v-model="customer.FullName"
+                      v-model="customer.fullName"
                     />
                   </div>
                 </div>
                 <div class="m-row">
                   <div class="m-lable">Nhóm khách hàng</div>
                   <div class="m-control">
-                    <select v-model="customer.CustomerGroupName"
+                    <select
+                      v-model="customer.customerGroupName"
                       tabindex="4"
                       id="cbxCustomerGroup"
                       class="m-input"
@@ -94,9 +95,9 @@
                     >
                       <option
                         v-for="customerGroup in this.customergroup"
-                        :key="customerGroup.CustomerGroupId"
+                        :key="customerGroup.customerGroupId"
                       >
-                        {{ customerGroup.CustomerGroupName }}
+                        {{ customerGroup.customerGroupName }}
                       </option>
                     </select>
                   </div>
@@ -113,7 +114,7 @@
                           id="nu"
                           value="0"
                           fieldName="Gender"
-                          v-model="customer.Gender"
+                          v-model="customer.gender"
                         />
                       </div>
                       <div class="m-gender-span">
@@ -129,7 +130,7 @@
                           id="nam"
                           value="1"
                           fieldName="Gender"
-                          v-model="customer.Gender"
+                          v-model="customer.gender"
                         />
                       </div>
                       <div class="m-gender-span">
@@ -145,7 +146,7 @@
                           id="khac"
                           value="2"
                           fieldName="Gender"
-                          v-model="customer.Gender"
+                          v-model="customer.gender"
                         />
                       </div>
                       <div class="m-gender-span">
@@ -171,7 +172,7 @@
                     id="txtEmail"
                     type="email"
                     fieldName="Email"
-                    v-model="customer.Email"
+                    v-model="customer.email"
                   />
                 </div>
               </div>
@@ -197,7 +198,7 @@
                       type="text"
                       required
                       fieldName="PhoneNumber"
-                      v-model="customer.PhoneNumber"
+                      v-model="customer.phoneNumber"
                     />
                   </div>
                 </div>
@@ -221,7 +222,7 @@
                   id="txtAddress"
                   type="text"
                   fieldName="Address"
-                  v-model="customer.Address"
+                  v-model="customer.address"
                 />
               </div>
             </div>
@@ -240,7 +241,11 @@
           >
             <span>Hủy</span>
           </button>
-          <button class="m-btn btn-add-save" id="btn-save" @click="saveCustomer">
+          <button
+            class="m-btn btn-add-save"
+            id="btn-save"
+            @click="saveCustomer"
+          >
             <div class="icon-add"></div>
             <div class="btn-text btn-dialog">Lưu</div>
           </button>
@@ -256,36 +261,43 @@ export default {
   props: ["isHide", "customergroup"],
   data() {
     return {
-      customer:{
-        Address: "",
-        CompanyName: "",
-        CompanyTaxCode: "",
-        CustomerCode: "",
-        CustomerGroupId: "",
-        CustomerGroupName: "",
-        CustomerId: "",
-        DateOfBirth: "",
-        DebitAmount: "",
-        Email: "",
-        FullName: "",
-        Gender: null,
-        GenderName: "",
-        IsStopFollow: "",
-        MemberCardCode: "",
-        PhoneNumber: "",
-      }
+      customer: {
+        address: "",
+        companyName: "",
+        companyTaxCode: "",
+        createdBy: "",
+        createdDate: null,
+        customerCode: "",
+        customerGroupId: "",
+        dateOfBirth: null,
+        email: "",
+        fullName: "",
+        gender: null,
+        memberCardCode: "",
+        modifiedBy: "",
+        modifiedDate: null,
+        note: "",
+        phoneNumber: "",
+      },
     };
   },
   methods: {
-    async saveCustomer(){
-    //   const me = this;
-    //   const response = await axios.post("http://api.manhnv.net/api/customers", {
-        
-    //   });
+    async saveCustomer() {
+      //   const me = this;
+      //   const response = await axios.post("http://api.manhnv.net/api/customers", {
+      //   });
+      if(this.customer.gender == "0"){
+        this.customer.gender= 0;
+      }else if(this.customer.gender == "1"){
+        this.customer.gender = 1;
+      }else{
+        this.customer.gender = 2;
+      }
+      
+      console.log(this.customer);
     },
     btnAddOnClick() {
       // this.isHide = false;
-      
     },
     btnCancelOnClick() {
       this.$emit("closePopup", true);
@@ -294,6 +306,5 @@ export default {
 };
 </script>
 <style>
-/* @import "../../../styles/basics/base-dialog.css";
-@import "../../../styles/basics/dialog-customer.css"; */
+@import "../../../../styles/basics/dialog-customer.css";
 </style>

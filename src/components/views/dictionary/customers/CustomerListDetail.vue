@@ -62,7 +62,6 @@
                       ref="formatDate"
                       fieldName="DateOfBirth"
                       v-model="customer.dateOfBirth"
-                      
                     />
                   </div>
                 </div>
@@ -272,7 +271,6 @@
   </div>
 </template>
 <script>
-import * as moment from 'moment';
 import axios from "axios";
 export default {
   name: "CustomerListDetail",
@@ -286,26 +284,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    sumbit() {
-      this.dateFormated = moment(this.customer.dateOfBirth).format("YYYY-MM-DD");
-      //then you send dateFormated variable instead of birth_date
-    },
-    
-    //Hàm định dạng ngày tháng
-    formatDate(ddmmyyy) {
-      var date = new Date(ddmmyyy);
-      if (Number.isNaN(date.getTime())) {
-        return "";
-      } else {
-        var day = date.getDate(),
-          month = date.getMonth() + 1,
-          year = date.getFullYear();
-        day < 10 ? "0" + day : day;
-        month < 10 ? "0" + month : month;
-        return year + "-" + month + "-" + day;
-      }
-    },
+  methods: { 
     deleteCustomer() {
       axios
         .delete(
@@ -327,7 +306,7 @@ export default {
             this.$emit("loadData");
           })
           .catch((e) => {
-            console.log(e.response);
+            console.log(e.response.data);
           });
         console.log(response);
       } else {
@@ -338,7 +317,7 @@ export default {
             this.$emit("loadData");
           })
           .catch((e) => {
-            console.log(e.response);
+            console.log(e.response.data);
           });
         console.log(response);
       }
@@ -351,7 +330,6 @@ export default {
     }
   },
   created() {
-    this.sumbit();
   },
 };
 </script>

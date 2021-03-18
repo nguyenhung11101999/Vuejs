@@ -169,7 +169,7 @@ export default {
         this.$refs.customerCode.$refs.customerCode.focus();
       }, 0);
       this.customer = JSON.parse(JSON.stringify(cus));
-      
+      this.customer.dateOfBirth = this.formatDateInDialog(this.customer.dateOfBirth);
     },
     //Sự kiện  Đóng Dialog
     closePopup(value) {
@@ -182,7 +182,7 @@ export default {
     // },
     //Sự kiện  Load lại dữ liệu
     btnClickRefresh() {
-      this.Reset();
+      this.loadData();
     },
     //Sự kiện Thêm khách hàng
     btnClickAdd() {
@@ -210,6 +210,20 @@ export default {
         phoneNumber: "",
       };
     },
+    //Hàm định dạng ngày tháng trong Dialog
+    formatDateInDialog(ddmmyyy) {
+      var date = new Date(ddmmyyy);
+      if (Number.isNaN(date.getTime())) {
+        return "";
+      } else {
+        var day = date.getDate(),
+          month = date.getMonth() + 1,
+          year = date.getFullYear();
+        day = day < 10 ? "0" + day : day;
+        month = month < 10 ? "0" + month : month;
+        return year + "-" + month + "-" + day;
+      }
+    },
     //Hàm định dạng ngày tháng
     formatDate(ddmmyyy) {
       var date = new Date(ddmmyyy);
@@ -219,8 +233,8 @@ export default {
         var day = date.getDate(),
           month = date.getMonth() + 1,
           year = date.getFullYear();
-        day < 10 ? "0" + day : day;
-        month < 10 ? "0" + month : month;
+        day = day < 10 ? "0" + day : day;
+        month = month < 10 ? "0" + month : month;
         return day + "/" + month + "/" + year;
       }
     },

@@ -30,7 +30,7 @@
       </div>
       <div class="grid grid-customer">
         <table class="scrollTable" border="0" cellpadding="0" width="100%">
-          <colgroup>
+          <!-- <colgroup>
             <col style="width: 150px" />
             <col style="width: 200px" />
             <col style="width: 100px" />
@@ -40,7 +40,7 @@
             <col style="width: 150px" />
             <col style="width: 150px" />
             <col style="width: 150px" />
-          </colgroup>
+          </colgroup> -->
           <thead>
             <tr>
               <th fieldName="customerCode">Ma nhan vien</th>
@@ -75,7 +75,7 @@
             >
               <td>{{ customer.customerCode }}</td>
               <td>{{ customer.fullName }}</td>
-              <td>{{ customer.genderName }}</td>
+              <td>{{ formatGender(customer.gender) }}</td>
               <td class="m-date-center">
                 {{ formatDate(customer.dateOfBirth) }}
               </td>
@@ -116,6 +116,7 @@
       :isHide="isHideParent"
       ref="customerCode"
       :customergroup="customergroup"
+
     />
   </div>
 </template>
@@ -178,12 +179,25 @@ export default {
         return num;
       }
     },
+    //Hàm định dạng giới tính
+    formatGender(gender){
+      if(gender == 0){
+        gender = "Nữ"
+      }else if(gender == 1){
+        gender = "Nam"
+      }else{
+        gender = "Khác"
+      }
+      return gender;
+    },
+
     //Hàm load dữ liệu
     async loadData() {
       await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
         this.customer = res.data;
       });
     },
+
     // Hàm load dữ liệu của customergroup
     async loadCustomerGroup() {
       await axios

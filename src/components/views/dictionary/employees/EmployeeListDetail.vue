@@ -202,14 +202,16 @@
         </div>
         <!-- Phần footer dialog employee -->
         <div class="dialog-footer">
-          <button class="btn-delete m-btn m-btn-delete">
-            <span>Xóa</span>
-          </button>
+          <div>
+            <button tabindex="14" class="btn-delete m-btn m-btn-delete">
+              <span>Xóa</span>
+            </button>
+          </div>
           <div class="footer-right">
-            <button class="m-btn btn-cancel m-close-dialog" v-on:click="btnCancelOnClick" >
+            <button tabindex="15" class="m-btn btn-cancel m-close-dialog">
               <span>Hủy</span>
             </button>
-            <button class="m-btn btn-add-save" id="btn-save">
+            <button tabindex="16" class="m-btn btn-add-save" id="btn-save">
               <div class="icon-add"></div>
               <div class="btn-text btn-dialog">Lưu</div>
             </button>
@@ -225,12 +227,9 @@ export default {
   name: "EmployeeListDetail",
   props: ["isHide"],
   data() {
-    return {
-      
-    };
+    return {};
   },
   methods: {
-    
     btnAddOnClick() {
       // this.isHide = false;
     },

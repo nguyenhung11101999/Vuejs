@@ -87,7 +87,7 @@
                   <div class="m-lable">Nhóm khách hàng</div>
                   <div class="m-control">
                     <select
-                      v-model="customer.customerGroupName"
+                      v-model="customer.customerGroupId"
                       tabindex="4"
                       id="cbxCustomerGroup"
                       class="m-input"
@@ -95,7 +95,7 @@
                     >
                       <option
                         v-for="customerGroup in this.customergroup"
-                        :key="customerGroup.customerGroupId"
+                        :key="customerGroup.customerGroupId" :value="customerGroup.customerGroupId"
                       >
                         {{ customerGroup.customerGroupName }}
                       </option>
@@ -179,7 +179,7 @@
               <div class="m-row">
                 <div class="m-lable">Tên công ty</div>
                 <div class="m-control">
-                  <input tabindex="11" type="text" fieldName="CompanyName" />
+                  <input tabindex="11" type="text" fieldName="CompanyName" v-model="customer.companyName"/>
                 </div>
               </div>
             </div>
@@ -206,7 +206,7 @@
               <div class="m-row">
                 <div class="m-lable">Mã số thuế</div>
                 <div class="m-control">
-                  <input tabindex="12" type="text" fieldName="CompanyTaxCode" />
+                  <input tabindex="12" type="text" fieldName="CompanyTaxCode" v-model="customer.companyTaxCode"/>
                 </div>
               </div>
             </div>
@@ -255,7 +255,7 @@
   </div>
 </template>
 <script>
-// import axios from "axios";
+import axios from 'axios';
 export default {
   name: "CustomerListDetail",
   props: ["isHide", "customergroup"],
@@ -283,24 +283,32 @@ export default {
   },
   methods: {
     async saveCustomer() {
-      //   const me = this;
-      //   const response = await axios.post("http://api.manhnv.net/api/customers", {
-      //   });
-      if(this.customer.gender == "0"){
-        this.customer.gender= 0;
+      const me = this;
+      if(me.customer.gender == "0"){
+        me.customer.gender= 0;
       }else if(this.customer.gender == "1"){
-        this.customer.gender = 1;
+        me.customer.gender = 1;
       }else{
-        this.customer.gender = 2;
+        me.customer.gender = 2;
       }
+      const response = await axios.post("http://localhost:53873/api/v1/customers", me.customer).then(() =>{
+        this.btnCancelOnClick();
+        this.loadData();
+      });
       
-      console.log(this.customer);
+      console.log(response);
     },
     btnAddOnClick() {
       // this.isHide = false;
     },
     btnCancelOnClick() {
       this.$emit("closePopup", true);
+    },
+    //Hàm load dữ liệu
+    async loadData() {
+      await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
+        this.customer = res.data;
+      });
     },
   },
 };

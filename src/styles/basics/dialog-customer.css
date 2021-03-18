@@ -196,9 +196,9 @@ select {
             text-align: center;
         }
 
-#btn-delete-customer {
+/* #btn-delete-customer {
     visibility: hidden;
-}
+} */
 
 #txtSalary {
     text-align: right;

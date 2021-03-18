@@ -59,8 +59,10 @@
                       tabindex="5"
                       id="dtDateOfBirth"
                       type="date"
+                      ref="formatDate"
                       fieldName="DateOfBirth"
                       v-model="customer.dateOfBirth"
+                      
                     />
                   </div>
                 </div>
@@ -94,8 +96,9 @@
                       fieldName="CustomerGroupId"
                     >
                       <option
-                        v-for="customerGroup in this.customergroup"
-                        :key="customerGroup.customerGroupId" :value="customerGroup.customerGroupId"
+                        v-for="customerGroup in this.customergroups"
+                        :key="customerGroup.customerGroupId"
+                        :value="customerGroup.customerGroupId"
                       >
                         {{ customerGroup.customerGroupName }}
                       </option>
@@ -112,7 +115,7 @@
                           type="radio"
                           name="sex"
                           id="nu"
-                          value="0"
+                          :value="0"
                           fieldName="Gender"
                           v-model="customer.gender"
                         />
@@ -128,7 +131,7 @@
                           type="radio"
                           name="sex"
                           id="nam"
-                          value="1"
+                          :value="1"
                           fieldName="Gender"
                           v-model="customer.gender"
                         />
@@ -144,7 +147,7 @@
                           type="radio"
                           name="sex"
                           id="khac"
-                          value="2"
+                          :value="2"
                           fieldName="Gender"
                           v-model="customer.gender"
                         />
@@ -179,7 +182,12 @@
               <div class="m-row">
                 <div class="m-lable">Tên công ty</div>
                 <div class="m-control">
-                  <input tabindex="11" type="text" fieldName="CompanyName" v-model="customer.companyName"/>
+                  <input
+                    tabindex="11"
+                    type="text"
+                    fieldName="CompanyName"
+                    v-model="customer.companyName"
+                  />
                 </div>
               </div>
             </div>
@@ -206,7 +214,12 @@
               <div class="m-row">
                 <div class="m-lable">Mã số thuế</div>
                 <div class="m-control">
-                  <input tabindex="12" type="text" fieldName="CompanyTaxCode" v-model="customer.companyTaxCode"/>
+                  <input
+                    tabindex="12"
+                    type="text"
+                    fieldName="CompanyTaxCode"
+                    v-model="customer.companyTaxCode"
+                  />
                 </div>
               </div>
             </div>
@@ -231,7 +244,11 @@
       </div>
       <!--Phần footer dialog employee-->
       <div class="dialog-footer">
-        <button class="btn-delete m-btn" id="btn-delete-customer">
+        <button
+          @click="deleteCustomer"
+          class="btn-delete m-btn btn-delete-customer"
+          :class="{ showButtonDelete: showButtonDelete }"
+        >
           <span>Xóa</span>
         </button>
         <div class="footer-right">
@@ -255,61 +272,86 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import * as moment from 'moment';
+import axios from "axios";
 export default {
   name: "CustomerListDetail",
-  props: ["isHide", "customergroup"],
+  props: [
+    "isHide",
+    "customergroups",
+    "showButtonDelete",
+    "customer",
+    "formMode",
+  ],
   data() {
-    return {
-      customer: {
-        address: "",
-        companyName: "",
-        companyTaxCode: "",
-        createdBy: "",
-        createdDate: null,
-        customerCode: "",
-        customerGroupId: "",
-        dateOfBirth: null,
-        email: "",
-        fullName: "",
-        gender: null,
-        memberCardCode: "",
-        modifiedBy: "",
-        modifiedDate: null,
-        note: "",
-        phoneNumber: "",
-      },
-    };
+    return {};
   },
   methods: {
+    sumbit() {
+      this.dateFormated = moment(this.customer.dateOfBirth).format("YYYY-MM-DD");
+      //then you send dateFormated variable instead of birth_date
+    },
+    
+    //Hàm định dạng ngày tháng
+    formatDate(ddmmyyy) {
+      var date = new Date(ddmmyyy);
+      if (Number.isNaN(date.getTime())) {
+        return "";
+      } else {
+        var day = date.getDate(),
+          month = date.getMonth() + 1,
+          year = date.getFullYear();
+        day < 10 ? "0" + day : day;
+        month < 10 ? "0" + month : month;
+        return year + "-" + month + "-" + day;
+      }
+    },
+    deleteCustomer() {
+      axios
+        .delete(
+          "http://localhost:53873/api/v1/customers/" + this.customer.customerId
+        )
+        .then(() => {
+          this.btnCancelOnClick();
+          this.$emit("loadData");
+        });
+    },
     async saveCustomer() {
       const me = this;
-      if(me.customer.gender == "0"){
-        me.customer.gender= 0;
-      }else if(this.customer.gender == "1"){
-        me.customer.gender = 1;
-      }else{
-        me.customer.gender = 2;
+      const response = me;
+      if (this.formMode == 0) {
+        await axios
+          .put("http://localhost:53873/api/v1/customers", me.customer)
+          .then(() => {
+            this.btnCancelOnClick();
+            this.$emit("loadData");
+          })
+          .catch((e) => {
+            console.log(e.response);
+          });
+        console.log(response);
+      } else {
+        await axios
+          .post("http://localhost:53873/api/v1/customers", me.customer)
+          .then(() => {
+            this.btnCancelOnClick();
+            this.$emit("loadData");
+          })
+          .catch((e) => {
+            console.log(e.response);
+          });
+        console.log(response);
       }
-      const response = await axios.post("http://localhost:53873/api/v1/customers", me.customer).then(() =>{
-        this.btnCancelOnClick();
-        this.loadData();
-      });
-      
-      console.log(response);
     },
     btnAddOnClick() {
       // this.isHide = false;
     },
     btnCancelOnClick() {
       this.$emit("closePopup", true);
-    },
-    //Hàm load dữ liệu
-    async loadData() {
-      await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
-        this.customer = res.data;
-      });
-    },
+    }
+  },
+  created() {
+    this.sumbit();
   },
 };
 </script>

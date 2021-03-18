@@ -69,9 +69,9 @@
           </thead>
           <tbody class="scrollContent">
             <tr
-              v-for="customer in customer"
+              v-for="customer in customers"
               :key="customer.customerId"
-              @dblclick="dbClick"
+              @dblclick="dbClick(customer)"
             >
               <td>{{ customer.customerCode }}</td>
               <td>{{ customer.fullName }}</td>
@@ -115,8 +115,11 @@
       @closePopup="closePopup"
       :isHide="isHideParent"
       ref="customerCode"
-      :customergroup="customergroup"
-
+      :customergroups="customergroups"
+      :showButtonDelete="showButtonDelete"
+      :customer="customer"
+      @loadData="loadData"
+      :formMode = "formMode"
     />
   </div>
 </template>
@@ -130,32 +133,82 @@ export default {
   },
   data() {
     return {
-      customer: [],
-      customergroup: [],
+      customers: [],
+      customergroups: [],
       isHideParent: true,
+      showButtonDelete: false,
+      formMode: 1,
+      customer: {
+        address: "",
+        companyName: "",
+        companyTaxCode: "",
+        createdBy: "",
+        createdDate: null,
+        customerCode: "",
+        customerGroupId: "",
+        dateOfBirth: null,
+        email: "",
+        fullName: "",
+        gender: null,
+        memberCardCode: "",
+        modifiedBy: "",
+        modifiedDate: null,
+        note: "",
+        phoneNumber: "",
+      },
     };
   },
   methods: {
     //Sự kiện kích đúp vào 1 dòng của bảng
-    dbClick() {
+    dbClick(cus) {
+      this.formMode = 0;
       this.isHideParent = false;
+      this.showButtonDelete = true;
       //focus vào Input  CustomerCode
       setTimeout(() => {
         this.$refs.customerCode.$refs.customerCode.focus();
       }, 0);
+      this.customer = JSON.parse(JSON.stringify(cus));
+      
     },
     //Sự kiện  Đóng Dialog
     closePopup(value) {
       this.isHideParent = value;
     },
+    // Reset() {
+    //   axios.get("http://localhost:53873/api/v1/customers").then((res) => {
+    //     this.customers = res.data;
+    //   });
+    // },
     //Sự kiện  Load lại dữ liệu
-    btnClickRefresh() {},
+    btnClickRefresh() {
+      this.Reset();
+    },
     //Sự kiện Thêm khách hàng
     btnClickAdd() {
       this.isHideParent = false;
+      this.showButtonDelete = false;
       setTimeout(() => {
         this.$refs.customerCode.$refs.customerCode.focus();
       }, 0);
+      this.customer = {
+        address: "",
+        companyName: "",
+        companyTaxCode: "",
+        createdBy: "",
+        createdDate: null,
+        customerCode: "",
+        customerGroupId: "",
+        dateOfBirth: null,
+        email: "",
+        fullName: "",
+        gender: 1,
+        memberCardCode: "",
+        modifiedBy: "",
+        modifiedDate: null,
+        note: "",
+        phoneNumber: "",
+      };
     },
     //Hàm định dạng ngày tháng
     formatDate(ddmmyyy) {
@@ -180,21 +233,21 @@ export default {
       }
     },
     //Hàm định dạng giới tính
-    formatGender(gender){
-      if(gender == 0){
-        gender = "Nữ"
-      }else if(gender == 1){
-        gender = "Nam"
-      }else{
-        gender = "Khác"
+    formatGender(gender) {
+      if (gender == 0) {
+        gender = "Nữ";
+      } else if (gender == 1) {
+        gender = "Nam";
+      } else {
+        gender = "Khác";
       }
       return gender;
     },
 
     //Hàm load dữ liệu
-    async loadData() {
-      await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
-        this.customer = res.data;
+    loadData() {
+      axios.get("http://localhost:53873/api/v1/customers").then((res) => {
+        this.customers = res.data;
       });
     },
 
@@ -203,7 +256,7 @@ export default {
       await axios
         .get("http://localhost:53873/api/v1/customergroups")
         .then((res) => {
-          this.customergroup = res.data;
+          this.customergroups = res.data;
         });
     },
     // async loadCustomerGroup() {

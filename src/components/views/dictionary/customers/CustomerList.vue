@@ -113,23 +113,27 @@
     </div>
     <CustomerListDetail
       @closePopup="closePopup"
+      @showSnackbar="showSnackbar"
       :isHide="isHideParent"
       ref="customerCode"
       :customergroups="customergroups"
       :showButtonDelete="showButtonDelete"
       :customer="customer"
       @loadData="loadData"
-      :formMode = "formMode"
+      :formMode="formMode"
     />
+    <Snackbar :isShowSnackbar="isShowSnackbar" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import CustomerListDetail from "./CustomerListDetail";
+import Snackbar from "../../../base/Snackbar";
 export default {
   name: "CustomerList",
   components: {
     CustomerListDetail,
+    Snackbar,
   },
   data() {
     return {
@@ -138,6 +142,7 @@ export default {
       isHideParent: true,
       showButtonDelete: false,
       formMode: 1,
+      isShowSnackbar: true,
       customer: {
         address: "",
         companyName: "",
@@ -169,17 +174,21 @@ export default {
         this.$refs.customerCode.$refs.customerCode.focus();
       }, 0);
       this.customer = JSON.parse(JSON.stringify(cus));
-      this.customer.dateOfBirth = this.formatDateInDialog(this.customer.dateOfBirth);
+      this.customer.dateOfBirth = this.formatDateInDialog(
+        this.customer.dateOfBirth
+      );
+    },
+    //Sự kiện hiện Snackbar
+    showSnackbar(value) {
+      this.isShowSnackbar = value;
+      setTimeout(() => {
+        this.isShowSnackbar = true;
+      }, 1500);
     },
     //Sự kiện  Đóng Dialog
     closePopup(value) {
       this.isHideParent = value;
     },
-    // Reset() {
-    //   axios.get("http://localhost:53873/api/v1/customers").then((res) => {
-    //     this.customers = res.data;
-    //   });
-    // },
     //Sự kiện  Load lại dữ liệu
     btnClickRefresh() {
       this.loadData();

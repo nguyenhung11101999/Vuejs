@@ -289,10 +289,14 @@ export default {
     "showButtonDelete",
     "customer",
     "formMode",
+    "data",
   ],
   data() {
     return {
       isValidated: false,
+      arrayError: [
+        
+      ],
     };
   },
   methods: {
@@ -309,10 +313,9 @@ export default {
     },
     async saveCustomer() {
       var inputs = this.$refs;
-      var array = Object.keys(inputs);
-      array.map((item) => {
-        this.isValidate(item) 
-      });
+      for (var key in inputs) {
+        this.isValidate(key);
+      }
       const me = this;
         if (this.formMode == 0) {
           await axios
@@ -323,7 +326,8 @@ export default {
               this.$emit("showSnackbar", false);
             })
             .catch((ex) => {
-              console.log(ex.response.data);
+              this.$emit("showDialogError", false);
+              this.$emit("getErrorsDialog", ex.response.data);
             });
         } else {
           await axios
@@ -333,9 +337,10 @@ export default {
               this.$emit("loadData");
               this.$emit("showSnackbar", false);
             })
-            .catch(() => {});
+            .catch((ex) => {
+              console.log(ex.response);
+            });
         }
-      
     },
     btnAddOnClick() {},
     btnCancelOnClick() {
@@ -355,8 +360,17 @@ export default {
       } else {
         inputs[value].title = "";
         inputs[value].style.border = "";
-        this.isValidated = true;
+        inputs[value].isValidates = true;
       }
+      // for (var key in inputs) {
+      //   if (inputs[key].required === true && !inputs[key].value) {
+      //     inputs[key].focus();
+      //     return;
+      //   } else if (!testEmail.test(inputs[key].value) && key === "email") {
+      //     inputs[key].focus();
+      //     return;
+      //   }
+      // }
     },
   },
   created() {},

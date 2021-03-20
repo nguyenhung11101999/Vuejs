@@ -121,26 +121,38 @@
       :customer="customer"
       @loadData="loadData"
       :formMode="formMode"
+      @showDialogError="showDialogError"
+      :data="data"
+      @getErrorsDialog="getErrorsDialog"
     />
     <Snackbar :isShowSnackbar="isShowSnackbar" />
+    <BaseDialogError
+      :isHideDialogError="isHideDialogError"
+      @showDialogError="showDialogError"
+      :data="data"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import CustomerListDetail from "./CustomerListDetail";
 import Snackbar from "../../../base/Snackbar";
+import BaseDialogError from "../../../base/BaseDialogError";
 export default {
   name: "CustomerList",
   components: {
     CustomerListDetail,
     Snackbar,
+    BaseDialogError,
   },
   data() {
     return {
+      data: [],
       customers: [],
       customergroups: [],
       isHideParent: true,
       showButtonDelete: false,
+      isHideDialogError: true,
       formMode: 1,
       isShowSnackbar: true,
       customer: {
@@ -182,6 +194,14 @@ export default {
       this.customer.dateOfBirth = this.formatDateInDialog(
         this.customer.dateOfBirth
       );
+    },
+    //Sự kiện tương tác với Dialog Error
+    showDialogError(value) {
+      this.isHideDialogError = value;
+    },
+    //Sự kiện append vào thể BaseDialogError
+    getErrorsDialog(value){
+      this.data = value;
     },
     //Sự kiện hiện Snackbar
     showSnackbar(value) {

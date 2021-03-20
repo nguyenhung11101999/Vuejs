@@ -4,14 +4,16 @@
 /*
     Kích thước
 */
-
+.isHideDialogError{
+    display: none;
+}
 .dialog-error {
     width: 500px;
     min-height: 230px;
     padding-top: 24px;
     box-sizing: border-box;
     z-index: 100;
-    display: none;
+    /* display: none; */
 }
 
     .dialog-error .title {

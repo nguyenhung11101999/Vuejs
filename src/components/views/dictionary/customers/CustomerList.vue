@@ -166,6 +166,11 @@ export default {
   methods: {
     //Sự kiện kích đúp vào 1 dòng của bảng
     dbClick(cus) {
+      var inputs = this.$refs.dialog.$refs;
+      var array = Object.keys(inputs);
+      array.map((item) => {
+        inputs[item].style.border = "";
+      });
       this.formMode = 0;
       this.isHideParent = false;
       this.showButtonDelete = true;

@@ -308,28 +308,34 @@ export default {
         });
     },
     async saveCustomer() {
+      var inputs = this.$refs;
+      var array = Object.keys(inputs);
+      array.map((item) => {
+        this.isValidate(item) 
+      });
       const me = this;
-      if (this.formMode == 0) {
-        await axios
-          .put("http://localhost:53873/api/v1/customers", me.customer)
-          .then(() => {
-            this.btnCancelOnClick();
-            this.$emit("loadData");
-            this.$emit("showSnackbar", false);
-          })
-          .catch((ex) => {
-            console.log(ex.response.data);
-          });
-      } else {
-        await axios
-          .post("http://localhost:53873/api/v1/customers", me.customer)
-          .then(() => {
-            this.btnCancelOnClick();
-            this.$emit("loadData");
-            this.$emit("showSnackbar", false);
-          })
-          .catch(() => {});
-      }
+        if (this.formMode == 0) {
+          await axios
+            .put("http://localhost:53873/api/v1/customers", me.customer)
+            .then(() => {
+              this.btnCancelOnClick();
+              this.$emit("loadData");
+              this.$emit("showSnackbar", false);
+            })
+            .catch((ex) => {
+              console.log(ex.response.data);
+            });
+        } else {
+          await axios
+            .post("http://localhost:53873/api/v1/customers", me.customer)
+            .then(() => {
+              this.btnCancelOnClick();
+              this.$emit("loadData");
+              this.$emit("showSnackbar", false);
+            })
+            .catch(() => {});
+        }
+      
     },
     btnAddOnClick() {},
     btnCancelOnClick() {
@@ -349,7 +355,7 @@ export default {
       } else {
         inputs[value].title = "";
         inputs[value].style.border = "";
-        this.isValidated = false;
+        this.isValidated = true;
       }
     },
   },

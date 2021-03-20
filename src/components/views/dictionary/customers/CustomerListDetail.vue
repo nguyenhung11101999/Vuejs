@@ -30,7 +30,7 @@
                     </div>
                     <div class="m-control">
                       <input
-                        v-on:blur="handleBlur"
+                        v-on:blur="isValidate('customerCode')"
                         ref="customerCode"
                         tabindex="1"
                         id="txtCustomerCode"
@@ -76,6 +76,7 @@
                     </div>
                     <div class="m-control">
                       <input
+                        v-on:blur="isValidate('fullName')"
                         ref="fullName"
                         tabindex="2"
                         id="txtFullName"
@@ -172,7 +173,8 @@
                   </div>
                   <div class="m-control">
                     <input
-                      
+                      v-on:blur="isValidate('email')"
+                      ref="email"
                       tabindex="9"
                       id="txtEmail"
                       type="email"
@@ -203,7 +205,8 @@
                   <div>
                     <div class="m-control">
                       <input
-                        
+                        v-on:blur="isValidate('phoneNumber')"
+                        ref="phoneNumber"
                         tabindex="10"
                         id="txtPhoneNumber"
                         type="text"
@@ -288,18 +291,11 @@ export default {
     "formMode",
   ],
   data() {
-    return {};
+    return {
+      isValidated: false,
+    };
   },
   methods: {
-    //validate bắt buộc nhập
-    handleBlur() {
-      for(var key in this.$refs){
-        console.log(this.$refs[key].value);
-        // if(this.$refs[key].value == ""){
-        //   console.log("a");
-        // }
-      }
-    },
     deleteCustomer() {
       axios
         .delete(
@@ -313,7 +309,6 @@ export default {
     },
     async saveCustomer() {
       const me = this;
-
       if (this.formMode == 0) {
         await axios
           .put("http://localhost:53873/api/v1/customers", me.customer)
@@ -339,6 +334,23 @@ export default {
     btnAddOnClick() {},
     btnCancelOnClick() {
       this.$emit("closePopup", true);
+    },
+    isValidate(value) {
+      var inputs = this.$refs;
+      var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+      if (inputs[value].required === true && !inputs[value].value) {
+        inputs[value].style.border = "1px solid #F65454";
+        inputs[value].title = "Không được để trống";
+        this.isValidated = false;
+      } else if (!testEmail.test(inputs[value].value) && value === "email") {
+        inputs[value].style.border = "1px solid #F65454";
+        inputs[value].title = "Không đúng định dạng";
+        this.isValidated = false;
+      } else {
+        inputs[value].title = "";
+        inputs[value].style.border = "";
+        this.isValidated = false;
+      }
     },
   },
   created() {},

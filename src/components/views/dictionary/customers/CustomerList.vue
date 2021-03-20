@@ -115,7 +115,7 @@
       @closePopup="closePopup"
       @showSnackbar="showSnackbar"
       :isHide="isHideParent"
-      ref="customerCode"
+      ref="dialog"
       :customergroups="customergroups"
       :showButtonDelete="showButtonDelete"
       :customer="customer"
@@ -171,7 +171,7 @@ export default {
       this.showButtonDelete = true;
       //focus vào Input  CustomerCode
       setTimeout(() => {
-        this.$refs.customerCode.$refs.customerCode.focus();
+        this.$refs.dialog.$refs.customerCode.focus();
       }, 0);
       this.customer = JSON.parse(JSON.stringify(cus));
       this.customer.dateOfBirth = this.formatDateInDialog(
@@ -197,8 +197,13 @@ export default {
     btnClickAdd() {
       this.isHideParent = false;
       this.showButtonDelete = false;
+      var inputs = this.$refs.dialog.$refs;
+      var array = Object.keys(inputs);
+      array.map((item) => {
+        inputs[item].style.border = "";
+      });
       setTimeout(() => {
-        this.$refs.customerCode.$refs.customerCode.focus();
+        this.$refs.dialog.$refs.customerCode.focus();
       }, 0);
       this.customer = {
         address: "",

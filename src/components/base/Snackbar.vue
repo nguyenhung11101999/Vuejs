@@ -1,10 +1,15 @@
 <template>
   <div>
     <!--Snackbar thông báo thành công hay thất bại-->
-    <div id="snackbar" :class="{ isShowSnackbar: isShowSnackbar,  }">
-      <i class="fas fa-check-circle" id="snackbar-icon"></i>
+    <div v-if="isValidated == true" class="snackbar" :class="{ isShowSnackbar: isShowSnackbar }">
+      <i class="fas fa-check-circle"></i>
       <div class="snack-text">Thành công</div>
-      <i class="fas fa-times" id="closeSnackBar"></i>
+      <i class="fas fa-times"></i>
+    </div>
+    <div v-if="isValidated == false" class="snackbar snackbar-errors" :class="{ isShowSnackbar: isShowSnackbar }">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div class="snack-text">Dữ liệu không hợp lệ</div>
+      <i class="m-closeSnackBar-errors fas fa-times"></i>
     </div>
   </div>
 </template>
@@ -12,9 +17,7 @@
 <script>
 export default {
   name: "Snackbar",
-  props: [
-    "isShowSnackbar",
-  ]
+  props: ["isShowSnackbar", "isValidated"],
 };
 </script>
 

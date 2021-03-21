@@ -124,8 +124,10 @@
       @showDialogError="showDialogError"
       :data="data"
       @getErrorsDialog="getErrorsDialog"
+      :isValidated="isValidated"
+      @changeisValidated="changeisValidated"
     />
-    <Snackbar :isShowSnackbar="isShowSnackbar" />
+    <Snackbar :isShowSnackbar="isShowSnackbar" :isValidated="isValidated" />
     <BaseDialogError
       :isHideDialogError="isHideDialogError"
       @showDialogError="showDialogError"
@@ -147,6 +149,7 @@ export default {
   },
   data() {
     return {
+      isValidated: true,
       data: [],
       customers: [],
       customergroups: [],
@@ -176,14 +179,20 @@ export default {
     };
   },
   methods: {
+    //Sự kiện Delete
+    
+    //Sự kiện thay đổi biến isValidated
+    changeisValidated(value){
+      this.isValidated = value;
+    },
     //Sự kiện kích đúp vào 1 dòng của bảng
     dbClick(cus) {
+      this.formMode = 0;
       var inputs = this.$refs.dialog.$refs;
       var array = Object.keys(inputs);
       array.map((item) => {
         inputs[item].style.border = "";
       });
-      this.formMode = 0;
       this.isHideParent = false;
       this.showButtonDelete = true;
       //focus vào Input  CustomerCode
@@ -220,6 +229,7 @@ export default {
     },
     //Sự kiện Thêm khách hàng
     btnClickAdd() {
+      this.formMode = 1;
       this.isHideParent = false;
       this.showButtonDelete = false;
       var inputs = this.$refs.dialog.$refs;

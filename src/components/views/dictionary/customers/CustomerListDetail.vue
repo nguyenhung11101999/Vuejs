@@ -35,7 +35,6 @@
                         tabindex="1"
                         id="txtCustomerCode"
                         type="text"
-                        class="input-required"
                         required
                         fieldName="CustomerCode"
                         v-model="customer.customerCode"
@@ -290,13 +289,11 @@ export default {
     "customer",
     "formMode",
     "data",
+    "isValidated",
   ],
   data() {
     return {
-      isValidated: false,
-      arrayError: [
-        
-      ],
+      arrayError: [],
     };
   },
   methods: {
@@ -311,36 +308,52 @@ export default {
           this.$emit("showSnackbar", false);
         });
     },
-    async saveCustomer() {
+    saveCustomer() {
+       const me = this;
       var inputs = this.$refs;
+      var array = Object.keys(inputs);
+      array.map((value) => {
+        this.isValidate(value);
+      });
       for (var key in inputs) {
-        this.isValidate(key);
-      }
-      const me = this;
-        if (this.formMode == 0) {
-          await axios
-            .put("http://localhost:53873/api/v1/customers", me.customer)
-            .then(() => {
-              this.btnCancelOnClick();
-              this.$emit("loadData");
-              this.$emit("showSnackbar", false);
-            })
-            .catch((ex) => {
-              this.$emit("showDialogError", false);
-              this.$emit("getErrorsDialog", ex.response.data);
-            });
+        if (inputs[key].title != "") {
+          inputs[key].focus();
+          setTimeout(() => {
+            this.$emit("changeisValidated", false);
+          }, 0);
+          console.log(this.isValidated);
+          this.$emit("showSnackbar", false);
+          return;
         } else {
-          await axios
-            .post("http://localhost:53873/api/v1/customers", me.customer)
-            .then(() => {
-              this.btnCancelOnClick();
-              this.$emit("loadData");
-              this.$emit("showSnackbar", false);
-            })
-            .catch((ex) => {
-              console.log(ex.response);
-            });
+          this.$emit("changeisValidated", true);
         }
+      }
+      console.log(this.isValidated);
+      if (this.formMode == 0) {
+        axios
+          .put("http://localhost:53873/api/v1/customers", me.customer)
+          .then(() => {
+            this.btnCancelOnClick();
+            this.$emit("loadData");
+            this.$emit("showSnackbar", false);
+          })
+          .catch((ex) => {
+            this.$emit("showDialogError", false);
+            this.$emit("getErrorsDialog", ex.response.data);
+          });
+      } else {
+        axios
+          .post("http://localhost:53873/api/v1/customers", me.customer)
+          .then(() => {
+            this.btnCancelOnClick();
+            this.$emit("loadData");
+            this.$emit("showSnackbar", false);
+          })
+          .catch((ex) => {
+            this.$emit("showDialogError", false);
+            this.$emit("getErrorsDialog", ex.response.data);
+          });
+      }
     },
     btnAddOnClick() {},
     btnCancelOnClick() {
@@ -352,25 +365,13 @@ export default {
       if (inputs[value].required === true && !inputs[value].value) {
         inputs[value].style.border = "1px solid #F65454";
         inputs[value].title = "Không được để trống";
-        this.isValidated = false;
       } else if (!testEmail.test(inputs[value].value) && value === "email") {
         inputs[value].style.border = "1px solid #F65454";
         inputs[value].title = "Không đúng định dạng";
-        this.isValidated = false;
       } else {
         inputs[value].title = "";
         inputs[value].style.border = "";
-        inputs[value].isValidates = true;
       }
-      // for (var key in inputs) {
-      //   if (inputs[key].required === true && !inputs[key].value) {
-      //     inputs[key].focus();
-      //     return;
-      //   } else if (!testEmail.test(inputs[key].value) && key === "email") {
-      //     inputs[key].focus();
-      //     return;
-      //   }
-      // }
     },
   },
   created() {},

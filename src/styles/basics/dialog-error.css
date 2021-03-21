@@ -31,7 +31,7 @@
 .list-error .error {
     height: 30px;
     min-width: 200px;
-    background-image: url('/content/icon/warning-icon.png');
+    background-image: url('../../assets/icon/warning-icon.png');
     background-repeat: no-repeat;
     padding-left: 30px;
     background-position: left;

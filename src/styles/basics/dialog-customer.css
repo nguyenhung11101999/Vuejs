@@ -4,6 +4,9 @@
 .isHide{
     display: none;
   }
+.input-required{
+    border: 1px solid #F65454;
+}
 /**
     Dialog employee
 */

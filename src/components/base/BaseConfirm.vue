@@ -8,7 +8,7 @@
         <i class="fas fa-exclamation-triangle"></i>
         <div>
           Bạn có chắc chắn muốn xóa khách hàng
-          <label class="delete-entity"></label> không?
+          <label class="delete-entity">{{customer.customerCode}}</label> không?
         </div>
       </div>
       <div class="dialog-footer">

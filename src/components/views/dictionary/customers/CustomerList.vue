@@ -111,6 +111,7 @@
         <div class="paging-right"><label>10 nhân viên/trang</label></div>
       </div>
     </div>
+    <Loading :isLoading="isLoading" />
     <CustomerListDetail
       @closePopup="closePopup"
       @showSnackbar="showSnackbar"
@@ -151,6 +152,7 @@ import CustomerListDetail from "./CustomerListDetail";
 import Snackbar from "../../../base/Snackbar";
 import BaseDialogError from "../../../base/BaseDialogError";
 import BaseConfirm from "../../../base/BaseConfirm";
+import Loading from "../../../base/Loading";
 export default {
   name: "CustomerList",
   components: {
@@ -158,9 +160,11 @@ export default {
     Snackbar,
     BaseDialogError,
     BaseConfirm,
+    Loading,
   },
   data() {
     return {
+      isLoading: false,
       isShowDialogConfirm: true,
       isValidated: true,
       data: [],
@@ -192,6 +196,10 @@ export default {
     };
   },
   methods: {
+    //Trương tác với biến loading
+    loading(value) {
+      this.loading = value;
+    },
     //Sự kiện thay đổi giá trị của biến customer khi ấn xóa ở dialog xác nhận xóa
     getCustomerDelete(value) {
       this.customer = value;
@@ -353,8 +361,8 @@ export default {
     },
 
     //Hàm load dữ liệu
-    loadData() {
-      axios.get("http://localhost:53873/api/v1/customers").then((res) => {
+    async loadData() {
+      await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
         this.customers = res.data;
       });
     },

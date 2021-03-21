@@ -196,7 +196,7 @@ export default {
     getCustomerDelete(value) {
       this.customer = value;
     },
-    //Sự kiện thay đổi giá trị của biến isShowDialogConfirm
+    //Sự kiện thay đổi giá trị của biến isShowDialogConfirm để thực hiện mở đóng Dialog Confirm
     closeDialogConfirm(value) {
       this.isShowDialogConfirm = value;
     },
@@ -223,18 +223,21 @@ export default {
     //Sự kiện kích đúp vào 1 dòng của bảng
     dbClick(cus) {
       this.formMode = 0;
-      var inputs = this.$refs.dialog.$refs;
-      var array = Object.keys(inputs);
-      array.map((item) => {
-        inputs[item].style.border = "";
-      });
+      // gán lại border cho input
+      // var inputs = this.$refs.dialog.$refs;
+      // var array = Object.keys(inputs);
+      // array.map((item) => {
+      //   inputs[item].style.border = "";
+      // });
       this.isHideParent = false;
       this.showButtonDelete = true;
       //focus vào Input  CustomerCode
       setTimeout(() => {
         this.$refs.dialog.$refs.customerCode.focus();
       }, 0);
+      // Gán đối tượng được chọn tronng bảng cho đối tượng customer
       this.customer = JSON.parse(JSON.stringify(cus));
+      // Format lại định dạng ngày tháng của đối tượng khi hiển thị lên dialog
       this.customer.dateOfBirth = this.formatDateInDialog(
         this.customer.dateOfBirth
       );
@@ -243,18 +246,19 @@ export default {
     showDialogError(value) {
       this.isHideDialogError = value;
     },
-    //Sự kiện append vào thể BaseDialogError
+    //Sự kiện thay đổi biến data để lưu mã lỗi được gửi về từ lớp con thông qua biến value
     getErrorsDialog(value) {
       this.data = value;
     },
     //Sự kiện hiện Snackbar
     showSnackbar(value) {
       this.isShowSnackbar = value;
+      // Ẩn Snackbar sau 1.5s khi đã hiện
       setTimeout(() => {
         this.isShowSnackbar = true;
       }, 1500);
     },
-    //Sự kiện  Đóng Dialog
+    //Tương tác với biến isHideParent để thực hiện bật tắt Dialog
     closePopup(value) {
       this.isHideParent = value;
     },
@@ -264,17 +268,23 @@ export default {
     },
     //Sự kiện Thêm khách hàng
     btnClickAdd() {
+      // gán trạng thái là thêm
       this.formMode = 1;
+      // Gán giá tị fase cho biến isHideParent để hiển thị Dialog thêm
       this.isHideParent = false;
+      // Ẩn button xóa
       this.showButtonDelete = false;
       var inputs = this.$refs.dialog.$refs;
       var array = Object.keys(inputs);
+      // Gán lại border cho các input khi thực hiện thao tác mới
       array.map((item) => {
         inputs[item].style.border = "";
       });
+      // Focus vào iunput customerCode khi vừa bật Dialog lên
       setTimeout(() => {
         this.$refs.dialog.$refs.customerCode.focus();
       }, 0);
+      // Gán cho đối tượng customer mới để lưu các thông tin nhập vào
       this.customer = {
         address: "",
         companyName: "",
@@ -365,7 +375,7 @@ export default {
     //     });
     // },
   },
-  //hàm khởi tạo lần đầu
+  //hàm khởi chạy đầu tiên
   created() {
     this.loadData();
     this.loadCustomerGroup();

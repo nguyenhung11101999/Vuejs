@@ -289,64 +289,62 @@ export default {
     "customer",
     "formMode",
     "data",
-    "isValidated",
   ],
   data() {
-    return {
-      arrayError: [],
-    };
+    return {};
   },
   methods: {
     //Sự kiện click Button Xóa ở Dialog
-    btnDelete(){
+    btnDelete() {
       this.$emit("closeDialogConfirm", false);
       this.$emit("getCustomerDelete", this.customer);
     },
-    // deleteCustomer() {
-    //   axios
-    //     .delete(
-    //       "http://localhost:53873/api/v1/customers/" + this.customer.customerId
-    //     )
-    //     .then(() => {
-    //       this.btnCancelOnClick();
-    //       this.$emit("loadData");
-    //       this.$emit("showSnackbar", false);
-    //     });
-    // },
+    //Sự kiện khi kích vào nút Lưu/Thêm mới trên Dialog
     saveCustomer() {
-       const me = this;
+      const me = this;
+      //Lấy tất cả input có khai báo ref
       var inputs = this.$refs;
       var array = Object.keys(inputs);
+      //Kiểm tra các input bằng hàm Validate
       array.map((value) => {
         this.isValidate(value);
       });
+      // Nếu input nào có title != "" thì focus vào input đó 
       for (var key in inputs) {
         if (inputs[key].title != "") {
           inputs[key].focus();
           setTimeout(() => {
+            //Thay đổi biến isValidated bên CustomerList để thực hiện hiển thị Snackbar nếu mà biến isValidated = flase
             this.$emit("changeisValidated", false);
           }, 0);
-          console.log(this.isValidated);
+          //Hiển thị Snackbar lỗi
           this.$emit("showSnackbar", false);
           return;
         } else {
+          //Nếu kiểm tra input hợp lệ thì đổi biến isValidated sang thàng true để thực hiện kiểm tra các input khác
           this.$emit("changeisValidated", true);
         }
       }
-      console.log(this.isValidated);
+      //Kiểm tra nếu trạng thái là sửa
       if (this.formMode == 0) {
         axios
           .put("http://localhost:53873/api/v1/customers", me.customer)
           .then(() => {
+            //Thàng công thì gọi hàm đóng Dialog
             this.btnCancelOnClick();
+            //Gọi hàm Load lại dữ liệu trong bảng
             this.$emit("loadData");
+            //Gọi hàm
             this.$emit("showSnackbar", false);
           })
           .catch((ex) => {
+            // Gọi hàm hiển thị Dialog danh sách lỗi
             this.$emit("showDialogError", false);
+            // Gửi dữ liệu lỗi sang cho hàm getErrorsDialog
             this.$emit("getErrorsDialog", ex.response.data);
           });
       } else {
+        //Ngược lại thì sẽ là trạng thái thêm
         axios
           .post("http://localhost:53873/api/v1/customers", me.customer)
           .then(() => {
@@ -360,19 +358,30 @@ export default {
           });
       }
     },
-    btnAddOnClick() {},
+    //Sự kiện khi nhấn vào nút cancel/X trên dialog
     btnCancelOnClick() {
+      //Gọi hàm đóng dialog ở lớp cha
       this.$emit("closePopup", true);
     },
+    //Hàm validate dữ liệu nhập vào
     isValidate(value) {
+      //Lấy tất cả các input được gán ref
       var inputs = this.$refs;
+      //Khai báo chuỗi định dạng email
       var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+      //Nếu là input là bắt buộc nhập và giá trị của nó là rỗng
       if (inputs[value].required === true && !inputs[value].value) {
+        //Gán border thể hiện lỗi
         inputs[value].style.border = "1px solid #F65454";
+        //Gán thuộc tính title thông báo là input chưa nhập đúng
         inputs[value].title = "Không được để trống";
+        // Nếu là input là email và giá trị của nó không theo định dạng
       } else if (!testEmail.test(inputs[value].value) && value === "email") {
+        //Gán border thể hiện lỗi
         inputs[value].style.border = "1px solid #F65454";
+         //Gán thuộc tính title thông báo là input chưa nhập đúng
         inputs[value].title = "Không đúng định dạng";
+        //Ngược lại title và border của input về ban đầu.
       } else {
         inputs[value].title = "";
         inputs[value].style.border = "";

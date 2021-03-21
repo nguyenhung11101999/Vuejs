@@ -33,11 +33,16 @@ export default {
     return {};
   },
   methods: {
+    //Sự kiện đóng dialog confirm khi ấn cannel/X
     btnCloseConfirm(){
+      //Gọi hàm thực hiện đóng
       this.$emit("closeDialogConfirm", true);
     },
+    //Sự khiện khi nhấn xác nhận xóa trên dialog confirm
     btnConfirmDelete(){
+      // Gọi hàm thực hiện Xóa
       this.$emit("deleteCustomer", this.customer);
+      // Gọi hàm đóng dialog confirm
       this.$emit("closeDialogConfirm", true);
     }
   },

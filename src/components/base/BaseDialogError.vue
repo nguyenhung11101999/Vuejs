@@ -35,16 +35,12 @@ export default {
   props: ["isHideDialogError", "data"],
   data() {
     return {
-      data1: {},
     };
   },
   methods: {
+    // Sự kiện đóng dialog error
     btnCloseDialogError() {
       this.$emit("showDialogError", true);
-      // console.log(this.data.data);
-      // for(var key in this.data.value){
-      //   console.log(key);
-      // }
     },
   },
 };

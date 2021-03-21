@@ -127,12 +127,21 @@
       :isValidated="isValidated"
       @changeisValidated="changeisValidated"
       @deleteCustomer="deleteCustomer"
+      :isShowDialogConfirm="isShowDialogConfirm"
+      @closeDialogConfirm="closeDialogConfirm"
+      @getCustomerDelete="getCustomerDelete"
     />
     <Snackbar :isShowSnackbar="isShowSnackbar" :isValidated="isValidated" />
     <BaseDialogError
       :isHideDialogError="isHideDialogError"
       @showDialogError="showDialogError"
       :data="data"
+    />
+    <BaseConfirm
+      :customer="customer"
+      :isShowDialogConfirm="isShowDialogConfirm"
+      @closeDialogConfirm="closeDialogConfirm"
+      @deleteCustomer="deleteCustomer"
     />
   </div>
 </template>
@@ -141,15 +150,18 @@ import axios from "axios";
 import CustomerListDetail from "./CustomerListDetail";
 import Snackbar from "../../../base/Snackbar";
 import BaseDialogError from "../../../base/BaseDialogError";
+import BaseConfirm from "../../../base/BaseConfirm";
 export default {
   name: "CustomerList",
   components: {
     CustomerListDetail,
     Snackbar,
     BaseDialogError,
+    BaseConfirm,
   },
   data() {
     return {
+      isShowDialogConfirm: true,
       isValidated: true,
       data: [],
       customers: [],
@@ -180,7 +192,15 @@ export default {
     };
   },
   methods: {
-    //Sự kiện Delete
+    //Sự kiện thay đổi giá trị của biến customer khi ấn xóa ở dialog xác nhận xóa
+    getCustomerDelete(value) {
+      this.customer = value;
+    },
+    //Sự kiện thay đổi giá trị của biến isShowDialogConfirm
+    closeDialogConfirm(value) {
+      this.isShowDialogConfirm = value;
+    },
+    // Sự kiện Delete
     deleteCustomer(customerDelete) {
       axios
         .delete(

@@ -299,7 +299,8 @@ export default {
   methods: {
     //Sự kiện click Button Xóa ở Dialog
     btnDelete(){
-      this.$emit("deleteCustomer", this.customer);
+      this.$emit("closeDialogConfirm", false);
+      this.$emit("getCustomerDelete", this.customer);
     },
     // deleteCustomer() {
     //   axios

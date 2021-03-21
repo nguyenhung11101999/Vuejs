@@ -1,0 +1,56 @@
+﻿
+/*
+    Dialog xác nhận xóa
+*/
+.isShowDialogConfirm{
+    display: none;
+}
+.dialog-delete {
+    width: 500px;
+    height: 200px;
+    padding-top: 24px;
+    box-sizing: border-box;
+    z-index: 500;
+    /* display: none; */
+}
+
+
+    .dialog-delete .title {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 16px;
+        padding-left:24px;
+    }
+
+    .dialog-delete .confirm-delete {
+        display: flex;
+        flex-direction: row;
+        align-items:center;
+        height:40px;
+        padding-left:24px;
+    }
+
+.confirm-delete .fa-exclamation-triangle {
+    width: 35px;
+    height: 100%;
+    font-size:28px;
+    color: red;
+    margin-right:10px;
+}
+.confirm-delete  div{
+    font-size:14px;
+    color:#000;
+    height:100%;
+}
+.delete-bottom{
+    display:flex;
+    padding-left:210px;
+}
+
+.delete-bottom #delete-no{
+    margin-right:10px;
+}
+.delete-customerCode{
+    font-weight:bold;
+    font-style:italic;
+}

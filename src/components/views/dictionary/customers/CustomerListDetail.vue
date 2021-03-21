@@ -250,7 +250,7 @@
         <!--Phần footer dialog employee-->
         <div class="dialog-footer">
           <button
-            @click="deleteCustomer"
+            @click="btnDelete"
             class="btn-delete m-btn btn-delete-customer"
             :class="{ showButtonDelete: showButtonDelete }"
           >
@@ -297,17 +297,21 @@ export default {
     };
   },
   methods: {
-    deleteCustomer() {
-      axios
-        .delete(
-          "http://localhost:53873/api/v1/customers/" + this.customer.customerId
-        )
-        .then(() => {
-          this.btnCancelOnClick();
-          this.$emit("loadData");
-          this.$emit("showSnackbar", false);
-        });
+    //Sự kiện click Button Xóa ở Dialog
+    btnDelete(){
+      this.$emit("deleteCustomer", this.customer);
     },
+    // deleteCustomer() {
+    //   axios
+    //     .delete(
+    //       "http://localhost:53873/api/v1/customers/" + this.customer.customerId
+    //     )
+    //     .then(() => {
+    //       this.btnCancelOnClick();
+    //       this.$emit("loadData");
+    //       this.$emit("showSnackbar", false);
+    //     });
+    // },
     saveCustomer() {
        const me = this;
       var inputs = this.$refs;

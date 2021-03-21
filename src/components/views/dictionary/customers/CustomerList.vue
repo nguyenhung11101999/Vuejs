@@ -126,6 +126,7 @@
       @getErrorsDialog="getErrorsDialog"
       :isValidated="isValidated"
       @changeisValidated="changeisValidated"
+      @deleteCustomer="deleteCustomer"
     />
     <Snackbar :isShowSnackbar="isShowSnackbar" :isValidated="isValidated" />
     <BaseDialogError
@@ -180,9 +181,23 @@ export default {
   },
   methods: {
     //Sự kiện Delete
-    
+    deleteCustomer(customerDelete) {
+      axios
+        .delete(
+          "http://localhost:53873/api/v1/customers/" + customerDelete.customerId
+        )
+        .then(() => {
+          this.closePopup(true);
+          this.loadData();
+          this.showSnackbar(false);
+        })
+        .catch(() => {
+          this.isValidated = false;
+          this.showSnackbar(false);
+        });
+    },
     //Sự kiện thay đổi biến isValidated
-    changeisValidated(value){
+    changeisValidated(value) {
       this.isValidated = value;
     },
     //Sự kiện kích đúp vào 1 dòng của bảng
@@ -209,7 +224,7 @@ export default {
       this.isHideDialogError = value;
     },
     //Sự kiện append vào thể BaseDialogError
-    getErrorsDialog(value){
+    getErrorsDialog(value) {
       this.data = value;
     },
     //Sự kiện hiện Snackbar

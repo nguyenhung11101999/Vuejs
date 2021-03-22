@@ -111,7 +111,8 @@
         <div class="paging-right"><label>10 nhân viên/trang</label></div>
       </div>
     </div>
-    <Loading :isLoading="isLoading" />
+    <BaseLoading :showLoading="showLoading"  />
+    <!-- <Loading :isLoading="isLoading" /> -->
     <CustomerListDetail
       @closePopup="closePopup"
       @showSnackbar="showSnackbar"
@@ -148,11 +149,13 @@
 </template>
 <script>
 import axios from "axios";
+import "vue-loading-overlay/dist/vue-loading.css"
 import CustomerListDetail from "./CustomerListDetail";
 import Snackbar from "../../../base/Snackbar";
 import BaseDialogError from "../../../base/BaseDialogError";
 import BaseConfirm from "../../../base/BaseConfirm";
-import Loading from "../../../base/Loading";
+// import Loading from "../../../base/Loading";
+import BaseLoading from "../../../base/BaseLoading"
 export default {
   name: "CustomerList",
   components: {
@@ -160,10 +163,12 @@ export default {
     Snackbar,
     BaseDialogError,
     BaseConfirm,
-    Loading,
+    // Loading,
+    BaseLoading
   },
   data() {
     return {
+      showLoading: true,
       isLoading: false,
       isShowDialogConfirm: true,
       isValidated: true,
@@ -197,9 +202,9 @@ export default {
   },
   methods: {
     //Trương tác với biến loading
-    loading(value) {
-      this.loading = value;
-    },
+    // loading(value) {
+    //   this.loading = value;
+    // },
     //Sự kiện thay đổi giá trị của biến customer khi ấn xóa ở dialog xác nhận xóa
     getCustomerDelete(value) {
       this.customer = value;
@@ -364,6 +369,7 @@ export default {
     async loadData() {
       await axios.get("http://localhost:53873/api/v1/customers").then((res) => {
         this.customers = res.data;
+        this.showLoading = false;
       });
     },
 
@@ -373,6 +379,7 @@ export default {
         .get("http://localhost:53873/api/v1/customergroups")
         .then((res) => {
           this.customergroups = res.data;
+          this.showLoading = false;
         });
     },
     // async loadCustomerGroup() {
